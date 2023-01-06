@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VideoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
@@ -15,17 +17,25 @@ class Video
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $path = null;
+    private string $path;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
+
+    #[ORM\OneToMany(mappedBy: 'video', targetEntity: ResizeVideo::class, orphanRemoval: true)]
+    public Collection $resizedVideos;
+
+    public function __construct()
+    {
+        $this->resizedVideos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -37,7 +47,7 @@ class Video
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -45,6 +55,36 @@ class Video
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResizeVideo>
+     */
+    public function getResizedVideos(): Collection
+    {
+        return $this->resizedVideos;
+    }
+
+    public function addResizedVideo(ResizeVideo $resizedVideo): self
+    {
+        if (!$this->resizedVideos->contains($resizedVideo)) {
+            $this->resizedVideos->add($resizedVideo);
+            $resizedVideo->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResizedVideo(ResizeVideo $resizedVideo): self
+    {
+        if ($this->resizedVideos->removeElement($resizedVideo)) {
+            // set the owning side to null (unless already changed)
+            if ($resizedVideo->getVideo() === $this) {
+                $resizedVideo->setVideo(null);
+            }
+        }
 
         return $this;
     }

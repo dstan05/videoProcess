@@ -5,13 +5,12 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async: '%env(MESSENGER_TRANSPORT_DSN)%/image_resize'
-            amqp: '%env(MESSENGER_TRANSPORT_DSN)%/image_resize'
+            amqps: '%env(MESSENGER_TRANSPORT_DSN)%/messages'
             # failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
         routing:
-            'App\Message\Video': amqp
+            'App\Message\Video': amqps
 # when@test:
 #    framework:
 #        messenger:
