@@ -50,13 +50,16 @@ services:
       - '../src/DependencyInjection/'
       - '../src/Entity/'
       - '../src/Kernel.php'
-  App\Service\File\FileUploader:
+  file_uploader.default:
+    class: App\Service\File\FileUploader
     arguments:
       $publicPath: '%public_directory%'
       $uploadPath: '%uploads_directory%'
-  message_handlers:
-    namespace: App\MessageHandler\
-    resource: '../src/MessageHandler'
-    tags: [ 'messenger.message_handler' ]
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+
+  file_uploader.resize:
+    class: App\Service\File\FileUploader
+    public: true
+    arguments:
+      $publicPath: '%public_directory%'
+      $uploadPath: '%uploads_directory%resize/'
+  App\Service\File\FileUploader: '@file_uploader.default'

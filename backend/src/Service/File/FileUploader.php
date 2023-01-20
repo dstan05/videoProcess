@@ -8,7 +8,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    private string $uploadPath;
+    public string $uploadPath;
     private SluggerInterface $slugger;
     public string $relativePath;
     private UploadedFile $file;
@@ -38,7 +38,7 @@ class FileUploader
      * @param string $uploadPath
      * @return string
      */
-    public static function getRelativePath(string $publicDir, string $uploadPath): string
+    private static function getRelativePath(string $publicDir, string $uploadPath): string
     {
         return str_replace($publicDir, '', $uploadPath);
     }

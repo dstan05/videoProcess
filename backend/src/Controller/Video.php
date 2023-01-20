@@ -2,11 +2,10 @@
 
 namespace App\Controller;
 
+use App\Service\File\FileUploader;
 use App\Normalizer\VideoNormalizer;
-use FFMpeg\FFMpeg;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\View\View;
-use App\Service\File\FileUploader;
 use InvalidArgumentException;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
